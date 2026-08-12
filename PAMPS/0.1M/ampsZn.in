@@ -2,7 +2,7 @@
 #                                                   #
 # LAMMPS INPUT SCRIPT                               #
 #                                                   #
-# Filename: in.ampsZn                               #
+# Filename: ampsZn.in                               #
 # Author: zehua (Jesse) yu，2025                    #
 #                                                   #
 #####################################################
@@ -12,7 +12,7 @@
 # ====================================================================
 
 # input data file
-variable        lmp_data string  ampsZn.restart.1200000
+variable        lmp_data string  Box-0.1M.data
 
 # ====================================================================
 # Initialization
@@ -32,12 +32,13 @@ bond_style harmonic
 angle_style harmonic
 dihedral_style opls
 improper_style cvff
-pair_style lj/cut/coul/long 12.0
+#pair_style lj/cut/coul/cut 12.0 #0-1ns relaxation
+pair_style lj/cut/coul/long 12.0 #1-7ns relaxation
 pair_modify mix geometric tail yes
 special_bonds lj/coul 0.0 0.0 0.5
 
 # Atom definition
-read_restart        ${lmp_data}
+read_data        ${lmp_data}
 
 # ====================================================================
 # Mass #
@@ -217,11 +218,11 @@ run_style verlet
 # Output option 
 # ====================================================================
 
-thermo          5000
+thermo          50000
 thermo_style    custom time atoms temp press etotal density
 thermo_modify   flush yes
 
-restart 100000  ampsZn.restart
+restart 1000000  ampsZn.restart
 
 # ====================================================================
 # run
@@ -229,11 +230,13 @@ restart 100000  ampsZn.restart
 
 timestep  1
 fix      constrain water shake 1.0e-4 100 0 b 15 a 27
-fix      NPT all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0
 
-run          800000
-write_data   equilibrium7ns.data
+#0-7ns equilibrium
+fix          NPT all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0 
+run          7000000
+write_data   equilibrium7.data
 
+#7-17ns production
 unfix NPT
 
 dump            dtrj all custom 1000 ${lmp_data}.lammpstrj id type xu yu zu x y z
@@ -241,8 +244,8 @@ dump_modify     dtrj element c2 c1 h1 ca na oa cnc ha cs c4 s hcs h4 os ow hw zn
 
 fix   1 all nve
 
-run 3100000
-write_data   MSDZn3.data
+run 10000000
+write_data   production10.data
 
 
 
