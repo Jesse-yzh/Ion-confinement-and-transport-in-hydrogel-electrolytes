@@ -1,0 +1,199 @@
+#####################################################
+#                                                   #
+# LAMMPS INPUT SCRIPT                               #
+#                                                   #
+# Filename: aamZn.in                                #
+# Author: zehua (Jesse) yu，2025                    #
+#                                                   #
+#####################################################
+
+# ====================================================================
+# Define variables
+# ====================================================================
+
+# input data file
+variable        lmp_data string  Box-0.5M.data
+
+# ====================================================================
+# Initialization
+# ====================================================================
+
+units           real      
+boundary        p p p
+dimension       3
+atom_style      full
+
+# ====================================================================
+# Force Field
+# ====================================================================
+
+# LJ potential
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+improper_style cvff
+#pair_style lj/cut/coul/cut 12.0 #0-1ns relaxation
+pair_style lj/cut/coul/long 12.0 #1-7ns relaxation
+pair_modify mix geometric tail yes
+special_bonds lj/coul 0.0 0.0 0.5
+
+# Atom definition
+read_data        ${lmp_data}
+
+# ====================================================================
+# Mass #
+# ====================================================================
+
+mass   1  12.0110 # c2
+mass   2  12.0110 # c1
+mass   3   1.0080 # h2
+mass   4  12.0110 # ca
+mass   5   1.0080 # h1
+mass   6  15.9990 # oa
+mass   7  14.0070 # na
+mass   8   1.0080 # ha
+mass   9  15.9994 # ow
+mass  10   1.0080 # hw
+mass  11  65.3800 # zn
+mass  12  32.0600 # s
+mass  13  15.9990 # os
+
+# ================================================================
+# Bond coeffs # harmonic
+# ================================================================
+
+bond_coeff   1   340.0 1.080  # c2-h2
+bond_coeff   2   549.0 1.340  # c2-c1
+bond_coeff   3   410.0 1.444  # c1-ca
+bond_coeff   4   340.0 1.080  # c1-h1
+bond_coeff   5   570.0 1.229  # ca-oa
+bond_coeff   6   490.0 1.335  # ca-na
+bond_coeff   7   434.0 1.010  # na-ha
+bond_coeff   8   450.0 0.9572 # ow-hw
+bond_coeff   9   700.0 1.440  # s-os
+
+# =================================================================
+# Angle coeffs # harmonic
+# =================================================================
+
+angle_coeff   1    35.00 117.0  # h2-c2-h2
+angle_coeff   2    35.00 120.0  # c1-c2-h2
+angle_coeff   3    58.35 112.7  # c1-c2-c1
+angle_coeff   4    85.00 120.7  # c2-c1-ca
+angle_coeff   5    35.00 120.0  # c2-c1-h1
+angle_coeff   6    35.00 119.7  # ca-c1-h1
+angle_coeff   7    35.00 117.0  # h1-c1-h1
+angle_coeff   8    80.00 125.3  # c1-ca-oa
+angle_coeff   9    70.00 115.5  # c1-ca-na
+angle_coeff  10    80.00 122.9  # oa-ca-na
+angle_coeff  11    35.00 119.8  # ca-na-ha
+angle_coeff  12    35.00 120.0  # ha-na-ha
+angle_coeff  13    58.35 112.7  # c2-c1-c2
+angle_coeff  14    55.00 104.52 # hw-ow-hw
+angle_coeff  15   104.00 119.0  # os-s-os
+
+# =======================================================================
+# Dihedral coeffs # opls
+# =======================================================================
+
+dihedral_coeff  1     0.8    -0.76   0.0    0.0 # h2-c2-c1-ca
+dihedral_coeff  2     0.0     0.0    0.3    0.0 # h2-c2-c1-h1
+dihedral_coeff  3     0.7    -1.5    0.0    0.0 # c1-c2-c1-ca
+dihedral_coeff  4     0.8    -0.76   0.0    0.0 # c1-c2-c1-h1
+dihedral_coeff  5     0.8    -0.76   0.0    0.0 # h2-c2-c1-c2
+dihedral_coeff  6     0.7    -1.5    0.0    0.0 # c1-c2-c1-c2
+dihedral_coeff  7     2.5     6.0    0.0    0.0 # c2-c1-ca-oa
+dihedral_coeff  8     2.0     0.0    0.0    0.0 # c2-c1-ca-na
+dihedral_coeff  9     0.0     0.0    0.0    0.0 # h1-c1-ca-oa
+dihedral_coeff 10     0.0     0.0    0.0    0.0 # h1-c1-ca-na
+dihedral_coeff 11     0.0     4.9    0.0    0.0 # c1-ca-na-ha
+dihedral_coeff 12     0.0     4.9    0.0    0.0 # oa-ca-na-ha
+
+# ===============================================================================
+# Improper coeffs # cvff
+# ===============================================================================
+
+improper_coeff    1    10.500      -1       2 # c1-ca-oa-na
+improper_coeff    2     2.500      -1       2 # ca-na-ha-ha
+
+# =============================================================================
+# Pair coeffs # lj/cut/coul/long
+# =============================================================================
+
+pair_coeff   1  1   0.0760   3.5500  # c2
+pair_coeff   2  2   0.0760   3.5500  # c1
+pair_coeff   3  3   0.0300   2.5000  # h2
+pair_coeff   4  4   0.0700   3.5500  # ca
+pair_coeff   5  5   0.0300   2.5000  # h1
+pair_coeff   6  6   0.2100   2.9600  # oa
+pair_coeff   7  7   0.1700   3.2500  # na
+pair_coeff   8  8   0.0000   0.0000  # ha
+pair_coeff   9  9   0.1521   3.1507  # ow
+pair_coeff  10 10   0.0000   1.0000  # hw
+pair_coeff  11 11   0.2500   1.94216 # zn
+pair_coeff  12 12   0.250    3.55    # s
+pair_coeff  13 13   0.170    2.96    # os
+
+set type   1  charge   -0.2681     # c2
+set type   2  charge   -0.1010     # c1
+set type   3  charge    0.1041     # h2
+set type   4  charge    0.6362     # ca
+set type   5  charge    0.0801     # h1
+set type   6  charge   -0.4173     # oa
+set type   7  charge   -1.1831     # na
+set type   8  charge    0.5225     # ha
+set type   9  charge   -0.834      # ow
+set type  10  charge    0.417      # hw
+set type  11  charge    2.0        # zn
+set type  12  charge    1.2     # s
+set type  13  charge   -0.8     # os
+
+group cz id 11 673 1345 661 1333 1999
+set group cz charge 0
+
+# Group definition
+# Molecule group      
+group   water       type    9 10
+group   aam         type    1:8
+group   Znions      type    11
+
+# Coulomb interaction
+kspace_style     pppm 1.0e-5
+neighbor         2 bin
+neigh_modify     delay 0
+
+# Run style
+run_style verlet
+
+# ====================================================================
+# Output option 
+# ====================================================================
+
+thermo          50000
+thermo_style    custom time atoms temp press etotal density
+thermo_modify   flush yes
+
+restart 1000000  aamZn.restart
+# ====================================================================
+# run
+# ====================================================================
+
+timestep  1
+fix      constrain water shake 1.0e-4 100 0 b 8 a 14
+
+#0-7ns equilibrium
+fix          NPT all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0 
+run          7000000
+write_data   equilibrium7.data
+
+#7-17ns production
+unfix NPT
+
+dump            dtrj all custom 1000 ${lmp_data}.lammpstrj id type xu yu zu x y z
+dump_modify     dtrj element c2 c1 h2 ca h1 oa na ha ow hw zn s os
+
+fix   1 all nve
+
+run 10000000
+write_data   production10.data
+

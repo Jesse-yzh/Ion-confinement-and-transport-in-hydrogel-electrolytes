@@ -1,0 +1,246 @@
+#####################################################
+#                                                   #
+# LAMMPS INPUT SCRIPT                               #
+#                                                   #
+# Filename: ampsZn.in                               #
+# Author: zehua (Jesse) yu，2025                    #
+#                                                   #
+#####################################################
+
+# ====================================================================
+# Define variables
+# ====================================================================
+
+# input data file
+variable        lmp_data string  Box-1M.data
+
+# ====================================================================
+# Initialization
+# ====================================================================
+
+units           real      
+boundary        p p p
+dimension       3
+atom_style      full
+
+# ====================================================================
+# Force Field
+# ====================================================================
+
+# LJ potential
+bond_style harmonic
+angle_style harmonic
+dihedral_style opls
+improper_style cvff
+pair_style lj/cut/coul/long 12.0
+pair_modify mix geometric tail yes
+special_bonds lj/coul 0.0 0.0 0.5
+
+# Atom definition
+read_data        ${lmp_data}
+
+# ====================================================================
+# Mass #
+# ====================================================================
+
+mass   1  15.9994 # ow
+mass   2   1.0080 # hw
+mass   3  65.3800 # zn
+mass   4  12.0110 # c2
+mass   5  12.0110 # c1
+mass   6   1.0080 # h1
+mass   7  12.0110 # ca
+mass   8  14.0070 # na
+mass   9  15.9990 # oa
+mass  10  12.0110 # cnc
+mass  11   1.0080 # ha
+mass  12  12.0110 # cs
+mass  13  12.0110 # c4
+mass  14  32.0600 # s
+mass  15   1.0080 # hcs
+mass  16   1.0080 # h4
+mass  17  15.9990 # os
+
+# ================================================================
+# Bond coeffs # harmonic
+# ================================================================
+
+bond_coeff   1   450.0 0.9572 # ow-hw
+bond_coeff   2   549.0 1.340 # c2-c1
+bond_coeff   3   340.0 1.080 # c2-h1
+bond_coeff   4   410.0 1.444 # c1-ca
+bond_coeff   5   340.0 1.080 # c1-h1
+bond_coeff   6   490.0 1.335 # ca-na
+bond_coeff   7   570.0 1.229 # ca-oa
+bond_coeff   8   337.0 1.449 # na-cnc
+bond_coeff   9   434.0 1.010 # na-ha
+bond_coeff  10   268.0 1.529 # cnc-c4
+bond_coeff  11   268.0 1.529 # cnc-cs
+bond_coeff  12   340.0 1.770 # cs-s
+bond_coeff  13   340.0 1.090 # cs-hcs
+bond_coeff  14   340.0 1.090 # c4-h4
+bond_coeff  15   700.0 1.440 # s-os
+
+# =================================================================
+# Angle coeffs # harmonic
+# =================================================================
+
+angle_coeff   1     55.00 104.52 # hw-ow-hw
+angle_coeff   2     35.00 120.0 # c1-c2-h1
+angle_coeff   3     58.35 112.7 # c1-c2-c1
+angle_coeff   4     35.00 117.0 # h1-c2-h1
+angle_coeff   5     85.00 120.7 # c2-c1-ca
+angle_coeff   6     35.00 120.0 # c2-c1-h1
+angle_coeff   7     35.00 119.7 # h1-c1-ca
+angle_coeff   8     35.00 117.0 # h1-c1-h1
+angle_coeff   9     70.00 115.5 # c1-ca-na
+angle_coeff  10     80.00 125.3 # c1-ca-oa
+angle_coeff  11     80.00 122.9 # na-ca-oa
+angle_coeff  12     50.00 121.9 # ca-na-cnc
+angle_coeff  13     35.00 119.8 # ca-na-ha
+angle_coeff  14     38.00 118.4 # cnc-na-ha
+angle_coeff  15     80.00 109.7 # na-cnc-c4
+angle_coeff  16     80.00 109.7 # na-cnc-cs
+angle_coeff  17     58.35 112.7 # c4-cnc-c4
+angle_coeff  18     58.35 112.7 # cs-cnc-c4
+angle_coeff  19     50.00 108.6 # cnc-cs-s
+angle_coeff  20     37.50 110.7 # cnc-cs-hcs
+angle_coeff  21     35.00 109.5 # s-cs-hcs
+angle_coeff  22     33.00 107.8 # hcs-cs-hcs
+angle_coeff  23     37.50 110.7 # cnc-c4-h4
+angle_coeff  24     33.00 107.8 # h4-c4-h4
+angle_coeff  25     74.00 108.9 # cs-s-os
+angle_coeff  26    104.00 119.0 # os-s-os
+angle_coeff  27     58.35 112.7 # c2-c1-c2
+
+# =======================================================================
+# Dihedral coeffs # opls
+# =======================================================================
+
+dihedral_coeff   1     0.8    -0.76   0.0    0.0  # h1-c2-c1-c2
+dihedral_coeff   2     0.8    -0.76   0.0    0.0  # h1-c2-c1-ca
+dihedral_coeff   3     0.0     0.0    0.3    0.0  # h1-c2-c1-h1
+dihedral_coeff   4     0.7    -1.5    0.0    0.0  # c1-c2-c1-c2
+dihedral_coeff   5     0.7    -1.5    0.0    0.0  # c1-c2-c1-ca
+dihedral_coeff   6     0.8    -0.76   0.0    0.0  # c1-c2-c1-h1
+dihedral_coeff   7     2.0     0.0    0.0    0.0  # c2-c1-ca-na
+dihedral_coeff   8     2.5     6.0    0.0    0.0  # c2-c1-ca-oa
+dihedral_coeff   9     0.0     0.0    0.0    0.0  # h1-c1-ca-na
+dihedral_coeff  10     0.0     0.0    0.0    0.0  # h1-c1-ca-oa
+dihedral_coeff  11     2.3     6.089  0.0    0.0  # c1-ca-na-cnc
+dihedral_coeff  12     0.0     4.9    0.0    0.0  # c1-ca-na-ha
+dihedral_coeff  13     0.0     6.089  0.0    0.0  # oa-ca-na-cnc
+dihedral_coeff  14     0.0     4.9    0.0    0.0  # oa-ca-na-ha
+dihedral_coeff  15     0.0     0.462  0.0    0.0  # ca-na-cnc-c4
+dihedral_coeff  16     0.0     0.462  0.0    0.0  # ca-na-cnc-cs
+dihedral_coeff  17     0.0     0.0    0.0    0.0  # ha-na-cnc-c4
+dihedral_coeff  18     0.0     0.0    0.0    0.0  # ha-na-cnc-cs
+dihedral_coeff  19     0.0     0.0    0.464  0.0  # na-cnc-c4-h4
+dihedral_coeff  20     0.0     0.0    0.3    0.0  # c4-cnc-c4-h4
+dihedral_coeff  21     0.0     0.0    0.3    0.0  # cs-cnc-c4-h4
+dihedral_coeff  22     1.428   0.086  0.029  0.0  # na-cnc-cs-s
+dihedral_coeff  23     0.0     0.0    0.464  0.0  # na-cnc-cs-hcs
+dihedral_coeff  24     1.262  -0.198  0.465  0.0  # c4-cnc-cs-s
+dihedral_coeff  25     0.0     0.0    0.3    0.0  # c4-cnc-cs-hcs
+dihedral_coeff  26     0.0     0.0    0.0    0.0  # cnc-cs-s-os
+dihedral_coeff  27     0.0     0.0    0.35   0.0  # hcs-cs-s-os
+
+# ===============================================================================
+# Improper coeffs # cvff
+# ===============================================================================
+
+improper_coeff    1     10.500      -1       2 # c1-ca-na-oa
+improper_coeff    2      2.500      -1       2 # ca-na-cnc-ha
+
+# =============================================================================
+# Pair coeffs # lj/cut/coul/long
+# =============================================================================
+
+pair_coeff   1   1   0.1521   3.1507 # ow
+pair_coeff   2   2   0.0000   1.0000 # hw
+pair_coeff   3   3   0.2500   1.94216 # zn
+pair_coeff   4   4   0.076  3.55 # c2
+pair_coeff   5   5   0.076  3.55 # c1
+pair_coeff   6   6   0.030  2.50 # h1
+pair_coeff   7   7   0.070  3.55 # ca
+pair_coeff   8   8   0.170  3.25 # na
+pair_coeff   9   9   0.210  2.96 # oa
+pair_coeff  10  10   0.066  3.50 # cnc
+pair_coeff  11  11   0.000  0.00 # ha
+pair_coeff  12  12   0.066  3.50 # cs
+pair_coeff  13  13   0.066  3.50 # c4
+pair_coeff  14  14   0.250  3.55 # s
+pair_coeff  15  15   0.030  2.50 # hcs
+pair_coeff  16  16   0.030  2.50 # h4
+pair_coeff  17  17   0.170  2.96 # os
+
+set type   1  charge   -0.834  # ow
+set type   2  charge    0.417  # hw
+set type   3  charge    2.000  # zn
+set type   4  charge   -0.1375 # c2
+set type   5  charge   -0.2019 # c1
+set type   6  charge    0.1363 # h1
+set type   7  charge    0.516  # ca
+set type   8  charge   -0.9278 # na
+set type   9  charge   -0.4945 # oa
+set type  10  charge    0.259  # cnc
+set type  11  charge    0.4413 # ha
+set type  12  charge   -0.3375 # cs
+set type  13  charge   -0.2516 # c4
+set type  14  charge    0.7336 # s
+set type  15  charge    0.1216 # hcs
+set type  16  charge    0.1076 # h4
+set type  17  charge   -0.5484 # os
+
+group cz id 20481 16725 17977 19208 17926 19202 20454 21706
+set group cz charge 0
+
+# Group definition
+# Molecule group      
+group   water       type    1 2
+group   amps        type    4:17
+group   Znions      type    3
+group   fnvt        type    1:4 6:17
+
+# Coulomb interaction
+kspace_style     pppm 1.0e-5
+neighbor         2 bin
+neigh_modify     delay 0
+
+# Run style
+run_style verlet
+
+fix myE fnvt efield 0.0 0.0 0.0001 # 1e6 V/m
+#fix myE fnvt efield 0.0 0.0 0.001 # 1e7 V/m
+#fix myE fnvt efield 0.0 0.0 0.01 # 1e8 V/m
+#fix myE fnvt efield 0.0 0.0 0.1 # 1e9 V/m
+
+group c1 type 5
+fix freeze c1 setforce 0.0 0.0 0.0
+velocity amps set 0.0 0.0 0.0
+
+# ====================================================================
+# Output option 
+# ====================================================================
+
+thermo          50000
+thermo_style    custom time atoms temp press pe ke etotal density
+thermo_modify   flush yes
+
+restart 1000000  amps.restart
+
+# ====================================================================
+# run
+# ====================================================================
+
+timestep  1
+fix      constrain water shake 1.0e-4 100 0 b 1 a 1
+
+fix   1 fnvt nvt temp 300.0 300.0 100.0
+
+dump            dtrj all custom 1000 ${lmp_data}.lammpstrj id type xu yu zu x y z
+dump_modify     dtrj element ow hw zn c2 c1 h1 ca na oa cnc ha cs c4 s hcs h4 os
+
+run 4000000
+write_data   E.data
+

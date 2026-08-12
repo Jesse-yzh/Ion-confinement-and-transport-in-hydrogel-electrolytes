@@ -33,7 +33,7 @@ angle_style harmonic
 dihedral_style opls
 improper_style cvff
 #pair_style lj/cut/coul/cut 12.0 #0-1ns relaxation
-pair_style lj/cut/coul/long 12.0
+pair_style lj/cut/coul/long 12.0 #1-7ns relaxation
 pair_modify mix geometric tail yes
 special_bonds lj/coul 0.0 0.0 0.5
 
